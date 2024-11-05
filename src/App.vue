@@ -3,13 +3,13 @@ import HelloWorld from "./components/HelloWorld.vue";
 </script>
 
 <template>
-  <header>
+  <section>
     <div>
-      <HelloWorld msg="You did it!" />
+      <HelloWorld />
     </div>
-  </header>
+  </section>
 
-  <main></main>
+  <!-- <main></main> -->
 </template>
 
 <style scoped></style>
