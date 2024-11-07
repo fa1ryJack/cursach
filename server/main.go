@@ -9,8 +9,9 @@ import (
 
 func getData(w http.ResponseWriter, r *http.Request) {
     data, err := FetchMyLikes(r.URL.Query().Get("profile"))
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
 	if err != nil{
-    	w.Header().Set("Content-Type", "application/json")
 		resp := make(map[string]string)
 		resp["error"] = err.Error()
 		jsonResp, err := json.Marshal(resp)
@@ -21,7 +22,6 @@ func getData(w http.ResponseWriter, r *http.Request) {
 		w.Write(jsonResp)
 
 	}else{
-    	w.Header().Set("Content-Type", "application/json")
 		jsonResp, err := json.Marshal(data)
 		if err != nil {
 			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
