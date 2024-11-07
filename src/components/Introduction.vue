@@ -2,11 +2,10 @@
 
 <template>
   <div class="greetings">
-    <h1 class="green">You did it!</h1>
+    <h1 class="green">Welcome!</h1>
     <h3>
-      You’ve successfully created a project with
-      <a href="https://vite.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
+      Here you can get some (kinda) analysis  from Soundcloud's 
+      user by pasting their link in the box below.
     </h3>
   </div>
 </template>
@@ -19,9 +18,6 @@ h1 {
   top: -10px;
 }
 
-h3 {
-  font-size: 1.2rem;
-}
 
 .greetings h1,
 .greetings h3 {

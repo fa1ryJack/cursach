@@ -1,15 +1,16 @@
 <script setup>
-import HelloWorld from "./components/HelloWorld.vue";
+  import Introduction from "./components/Introduction.vue";
+  import TracksMapSection from "./components/TracksMapSection.vue"
 </script>
 
 <template>
   <section>
-    <div>
-      <HelloWorld />
-    </div>
+      <Introduction />
   </section>
 
-  <!-- <main></main> -->
+  <main>
+    <TracksMapSection/>
+  </main>
 </template>
 
 <style scoped></style>
