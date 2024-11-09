@@ -8,7 +8,7 @@ import (
 )
 
 func getData(w http.ResponseWriter, r *http.Request) {
-    data, err := FetchMyLikes(r.URL.Query().Get("profile"))
+    data, err := FetchLikes(r.URL.Query().Get("profile"))
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 	if err != nil{

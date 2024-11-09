@@ -6,13 +6,14 @@ import LikesCircles from "./LikesCircles.vue";
 const userURL = ref("");
 const loading = ref(false);
 const loaded = ref(false);
+const problem = ref(false);
 
 function handleSubmit(e) {
   e.preventDefault();
   try {
     loading = true;
     axios
-      .get("http://localhost:8080/data?profile=" + userURL.value)
+      .get("http://localhost:8080/data?profile=" + userURL.value.trim())
       .then((res) => {
         console.log(res.status);
       });
@@ -20,6 +21,7 @@ function handleSubmit(e) {
     console.log(error);
     loading = false;
     loaded = false;
+    problem = true;
   } finally {
     loading = false;
     loaded = true;
@@ -35,10 +37,12 @@ function handleSubmit(e) {
         placeholder="https://soundcloud.com/some-user-url"
         type="text"
         id="userURL"
+        required
         v-model="userURL"
       />
       <button v-on:click="handleSubmit">Go!</button>
     </form>
+    <h2 v-if="problem">It seems an error has occured.</h2>
     <div class="stats-wrapper" v-if="loaded">
       <LikesCircles />
     </div>

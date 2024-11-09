@@ -11,13 +11,20 @@ import (
 	soundcloudapi "github.com/zackradisic/soundcloud-api"
 )
 
-type BasicInfo struct{
+type TrackInfo struct{
 	ID int64
 	Title string
 	ArtworkURL string
+	Duration int64
 }
 
-func FetchMyLikes(profileURL string) ([]BasicInfo, error){
+type UploaderInfo struct{
+	tracks []TrackInfo
+	name string
+	AvatarURL string
+}
+
+func FetchLikes(profileURL string) ([]TrackInfo, error){
 
 	clientID, err := getClientID()
 
@@ -51,20 +58,20 @@ func FetchMyLikes(profileURL string) ([]BasicInfo, error){
 		return nil, errors.New("Failed to get likes from Soundcloud.")
 	}
 
-	var data []BasicInfo
+	var data []TrackInfo
 	for i := 0; i < len(likes); i++ {
 		if (likes[i].Track.Title == ""){
 			continue
 			
 		}
-		var info BasicInfo
+		var info TrackInfo
 		if (likes[i].Track.ArtworkURL != ""){
-			info = BasicInfo{
+			info = TrackInfo{
 				ID: likes[i].Track.ID,
 				Title: likes[i].Track.Title, 
 				ArtworkURL: likes[i].Track.ArtworkURL}
 		}else{
-			info = BasicInfo{
+			info = TrackInfo{
 				ID: likes[i].Track.ID,
 				Title: likes[i].Track.Title, 
 				ArtworkURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHnPaUNBw_Kr6J7M77WWMbUoCDTq75SZXNDw&s"}

@@ -7,6 +7,5 @@ import MainSection from "./components/MainSection.vue";
   <section>
     <Introduction />
   </section>
-
   <MainSection />
 </template>
