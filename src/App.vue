@@ -1,16 +1,12 @@
 <script setup>
-  import Introduction from "./components/Introduction.vue";
-  import TracksMapSection from "./components/TracksMapSection.vue"
+import Introduction from "./components/Introduction.vue";
+import MainSection from "./components/MainSection.vue";
 </script>
 
 <template>
   <section>
-      <Introduction />
+    <Introduction />
   </section>
 
-  <main>
-    <TracksMapSection/>
-  </main>
+  <MainSection />
 </template>
-
-<style scoped></style>

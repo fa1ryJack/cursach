@@ -2,10 +2,13 @@
 
 <template>
   <div class="greetings">
-    <h1 class="green">Welcome!</h1>
+    <h1 class="orange">Welcome!</h1>
     <h3>
-      Here you can get some (kinda) analysis  from Soundcloud's 
-      user by pasting their link in the box below.
+      Here you can get some statistics from
+      <a target="_blank" href="https://soundcloud.com/you/"
+        >Soundcloud's user</a
+      >
+      by pasting their link in the box below.
     </h3>
   </div>
 </template>
@@ -17,7 +20,6 @@ h1 {
   position: relative;
   top: -10px;
 }
-
 
 .greetings h1,
 .greetings h3 {
