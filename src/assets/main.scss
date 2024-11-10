@@ -54,6 +54,10 @@ a,
   }
 }
 
+.error {
+  color: red;
+}
+
 @media (hover: hover) {
   a:hover {
     background-color: hsla(29, 100%, 37%, 0.2);

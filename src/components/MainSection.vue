@@ -7,25 +7,28 @@ const userURL = ref("");
 const loading = ref(false);
 const loaded = ref(false);
 const problem = ref(false);
+const likesData = ref(null);
 
 function handleSubmit(e) {
   e.preventDefault();
-  try {
-    loading = true;
-    axios
-      .get("http://localhost:8080/data?profile=" + userURL.value.trim())
-      .then((res) => {
-        console.log(res.status);
-      });
-  } catch (error) {
-    console.log(error);
-    loading = false;
-    loaded = false;
-    problem = true;
-  } finally {
-    loading = false;
-    loaded = true;
-  }
+
+  loading.value = true;
+  axios
+    .get("http://localhost:8080/data?profile=" + userURL.value.trim())
+    .then((res) => {
+      likesData.value = res.data;
+    })
+    .catch((error) => {
+      console.log("error!!!!");
+      loading.value = false;
+      loaded.value = false;
+      problem.value = true;
+    })
+    .finally(() => {
+      loading.value = false;
+      loaded.value = true;
+      problem.value = false;
+    });
 }
 </script>
 
@@ -42,9 +45,9 @@ function handleSubmit(e) {
       />
       <button v-on:click="handleSubmit">Go!</button>
     </form>
-    <h2 v-if="problem">It seems an error has occured.</h2>
+    <h2 class="error" v-if="problem">It seems an error has occured.</h2>
     <div class="stats-wrapper" v-if="loaded">
-      <LikesCircles />
+      <LikesCircles :likes-data="likesData" />
     </div>
   </main>
 </template>

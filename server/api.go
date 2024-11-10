@@ -19,12 +19,12 @@ type TrackInfo struct{
 }
 
 type UploaderInfo struct{
-	tracks []TrackInfo
-	name string
+	Tracks []TrackInfo
+	Name string
 	AvatarURL string
 }
 
-func FetchLikes(profileURL string) ([]TrackInfo, error){
+func FetchLikes(profileURL string) (map[string]UploaderInfo, error){
 
 	clientID, err := getClientID()
 
@@ -58,25 +58,39 @@ func FetchLikes(profileURL string) ([]TrackInfo, error){
 		return nil, errors.New("Failed to get likes from Soundcloud.")
 	}
 
-	var data []TrackInfo
+	data := make(map[string]UploaderInfo)
 	for i := 0; i < len(likes); i++ {
 		if (likes[i].Track.Title == ""){
-			continue
-			
+			continue	
 		}
+		
 		var info TrackInfo
 		if (likes[i].Track.ArtworkURL != ""){
 			info = TrackInfo{
 				ID: likes[i].Track.ID,
 				Title: likes[i].Track.Title, 
-				ArtworkURL: likes[i].Track.ArtworkURL}
+				ArtworkURL: likes[i].Track.ArtworkURL,
+			}
 		}else{
 			info = TrackInfo{
 				ID: likes[i].Track.ID,
 				Title: likes[i].Track.Title, 
-				ArtworkURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHnPaUNBw_Kr6J7M77WWMbUoCDTq75SZXNDw&s"}
+				ArtworkURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHnPaUNBw_Kr6J7M77WWMbUoCDTq75SZXNDw&s",
+			}
 		}
-		data = append(data, info)
+
+		uploader, ok := data[likes[i].Track.User.Username];
+
+		if(ok){
+			uploader.Tracks = append(uploader.Tracks, info)
+			data[likes[i].Track.User.Username] = uploader
+		}else{
+			data[likes[i].Track.User.Username] = UploaderInfo{
+				Name: likes[i].Track.User.Username, 
+				AvatarURL: likes[i].Track.User.AvatarURL,
+				Tracks: []TrackInfo {info},
+			}
+		}	
 	}
 
 
