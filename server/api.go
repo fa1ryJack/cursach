@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"io"
+	"maps"
 	"net/http"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -14,30 +16,36 @@ import (
 type TrackInfo struct{
 	ID int64
 	Title string
-	ArtworkURL string
 	Duration int64
+	ArtworkURL string
 }
 
 type UploaderInfo struct{
-	Tracks []TrackInfo
 	Name string
+	Tracks []TrackInfo
 	AvatarURL string
 }
 
-func FetchLikes(profileURL string) (map[string]UploaderInfo, error){
+type UserLikes struct{
+	Name string
+	Likes []UploaderInfo
+	AvatarURL string
+}
+
+func FetchLikes(profileURL string) (UserLikes, error){
 
 	clientID, err := getClientID()
 
 	if err != nil {
 		fmt.Println(err)
-		return nil, errors.New("Failed to connect to Soundcloud.")
+		return UserLikes{}, errors.New("Failed to connect to Soundcloud.")
 	}
 
 	//init souncloud api
 	sc, err := soundcloudapi.New(soundcloudapi.APIOptions{ClientID: clientID})
 	if err != nil {
 		fmt.Println(err)
-		return nil, errors.New("Failed to connect to Soundcloud.")
+		return UserLikes{}, errors.New("Failed to connect to Soundcloud.")
 	}
 
 	//getting my likes
@@ -49,13 +57,13 @@ func FetchLikes(profileURL string) (map[string]UploaderInfo, error){
 	})
 	if err != nil {
 		fmt.Println(err)
-		return nil, errors.New("Failed to get likes from Soundcloud.")
+		return UserLikes{}, errors.New("Failed to get likes from Soundcloud.")
 	}
 
 	likes, err := likesPaginated.GetLikes()
 	if err != nil {
 		fmt.Println(err)
-		return nil, errors.New("Failed to get likes from Soundcloud.")
+		return UserLikes{}, errors.New("Failed to get likes from Soundcloud.")
 	}
 
 	data := make(map[string]UploaderInfo)
@@ -69,13 +77,15 @@ func FetchLikes(profileURL string) (map[string]UploaderInfo, error){
 			info = TrackInfo{
 				ID: likes[i].Track.ID,
 				Title: likes[i].Track.Title, 
-				ArtworkURL: likes[i].Track.ArtworkURL,
+				ArtworkURL: strings.ReplaceAll(likes[i].Track.ArtworkURL, "large", "t500x500"),
+				Duration: likes[i].Track.FullDurationMS,
 			}
 		}else{
 			info = TrackInfo{
 				ID: likes[i].Track.ID,
 				Title: likes[i].Track.Title, 
 				ArtworkURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHnPaUNBw_Kr6J7M77WWMbUoCDTq75SZXNDw&s",
+				Duration: likes[i].Track.FullDurationMS,
 			}
 		}
 
@@ -87,14 +97,25 @@ func FetchLikes(profileURL string) (map[string]UploaderInfo, error){
 		}else{
 			data[likes[i].Track.User.Username] = UploaderInfo{
 				Name: likes[i].Track.User.Username, 
-				AvatarURL: likes[i].Track.User.AvatarURL,
+				AvatarURL: strings.ReplaceAll(likes[i].Track.User.AvatarURL, "large", "t500x500"),
 				Tracks: []TrackInfo {info},
 			}
 		}	
 	}
 
+	user, err := sc.GetUser(soundcloudapi.GetUserOptions{ProfileURL: profileURL})
+	if err != nil {
+		fmt.Println(err)
+		return UserLikes{}, errors.New("Failed to get likes from Soundcloud.")
+	}
 
-	return data, nil
+	userlikes := UserLikes{
+		Likes: slices.Collect(maps.Values(data)), 
+		Name: user.Username, 
+		AvatarURL: strings.ReplaceAll(user.AvatarURL, "large", "t500x500"),
+	}
+
+	return userlikes, nil
 }
 
 func getClientID() (string, error){
