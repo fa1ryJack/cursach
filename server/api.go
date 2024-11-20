@@ -84,7 +84,7 @@ func FetchLikes(profileURL string) (UserLikes, error){
 			info = TrackInfo{
 				ID: likes[i].Track.ID,
 				Title: likes[i].Track.Title, 
-				ArtworkURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHnPaUNBw_Kr6J7M77WWMbUoCDTq75SZXNDw&s",
+				ArtworkURL: "https://d21buns5ku92am.cloudfront.net/26628/images/419679-1x1_SoundCloudLogo_cloudmark-f5912b-large-1645807040.jpg",
 				Duration: likes[i].Track.FullDurationMS,
 			}
 		}
