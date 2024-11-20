@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import LikesCircles from "./LikesCircles.vue";
 
 const userURL = ref("");
@@ -19,7 +19,7 @@ function handleSubmit(e) {
       likesData.value = res.data;
     })
     .catch((error) => {
-      console.log("error!!!!");
+      console.log("error!!!!", error);
       loading.value = false;
       loaded.value = false;
       problem.value = true;
