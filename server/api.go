@@ -14,22 +14,23 @@ import (
 )
 
 type TrackInfo struct{
-	ID int64
-	Title string
-	Duration int64
-	ArtworkURL string
+	ID int64 `json:"id"`
+	Title string `json:"name"`
+	Duration int64 `json:"value"`
+	ArtworkURL string `json:"ArtworkURL"`
 }
 
 type UploaderInfo struct{
-	Name string
-	Tracks []TrackInfo
-	AvatarURL string
+	ID int64 `json:"id"`
+	Name string `json:"name"`
+	Tracks []TrackInfo `json:"children"`
+	AvatarURL string `json:"AvatarURL"`
 }
 
 type UserLikes struct{
-	Name string
-	Likes []UploaderInfo
-	AvatarURL string
+	Name string `json:"name"`
+	Likes []UploaderInfo `json:"children"`
+	AvatarURL string `json:"AvatarURL"`
 }
 
 func FetchLikes(profileURL string) (UserLikes, error){
@@ -51,7 +52,7 @@ func FetchLikes(profileURL string) (UserLikes, error){
 	//getting my likes
 	likesPaginated, err := sc.GetLikes(soundcloudapi.GetLikesOptions{
 		ProfileURL: profileURL,
-		Limit: 1000,
+		Limit: 50,
 		Offset: "",
 		Type: "all",
 	})
@@ -96,6 +97,7 @@ func FetchLikes(profileURL string) (UserLikes, error){
 			data[likes[i].Track.User.Username] = uploader
 		}else{
 			data[likes[i].Track.User.Username] = UploaderInfo{
+				ID: likes[i].Track.User.ID,
 				Name: likes[i].Track.User.Username, 
 				AvatarURL: strings.ReplaceAll(likes[i].Track.User.AvatarURL, "large", "t500x500"),
 				Tracks: []TrackInfo {info},
