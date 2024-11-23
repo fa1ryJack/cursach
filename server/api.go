@@ -81,6 +81,13 @@ func FetchLikes(profileURL string) (UserLikes, error){
 				ArtworkURL: strings.ReplaceAll(likes[i].Track.ArtworkURL, "large", "t500x500"),
 				Duration: likes[i].Track.FullDurationMS,
 			}
+		}else if(likes[i].Track.User.AvatarURL != ""){
+			info = TrackInfo{
+				ID: likes[i].Track.ID,
+				Title: likes[i].Track.Title, 
+				ArtworkURL: strings.ReplaceAll(likes[i].Track.User.AvatarURL, "large", "t500x500"),
+				Duration: likes[i].Track.FullDurationMS,
+			}
 		}else{
 			info = TrackInfo{
 				ID: likes[i].Track.ID,

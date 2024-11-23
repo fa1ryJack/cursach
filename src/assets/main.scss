@@ -23,7 +23,9 @@ $f-size: 1.4rem;
   font-size: $f-size;
   gap: 60px;
 
-  * {
+  a,
+  input,
+  button {
     transition: 0.4s;
   }
 
