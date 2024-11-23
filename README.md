@@ -1,5 +1,6 @@
 # cursach
 my cursach for college
 # TODO
-* see observable notebook
-* add offset to api!
+* add widget
+* add offset to api?
+* responsive?
