@@ -4,7 +4,7 @@
   <div class="greetings">
     <h1 class="orange">Welcome!</h1>
     <h3>
-      Here you can get some statistics from
+      Here you can get likes grouped by uploaders from
       <a target="_blank" href="https://soundcloud.com/you/"
         >Soundcloud's user</a
       >

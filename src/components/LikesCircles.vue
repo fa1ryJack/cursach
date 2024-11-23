@@ -1,9 +1,11 @@
 <script setup>
-import { ref, watchEffect } from "vue";
+import { ref, watchEffect, useTemplateRef } from "vue";
 import * as d3 from "d3";
 
 const { likesData } = defineProps(["likesData"]);
-const chart = ref(null);
+const link = ref("");
+const linkExists = ref(false);
+const widget = useTemplateRef("widget");
 
 watchEffect(() => {
   setTimeout(() => {
@@ -11,13 +13,17 @@ watchEffect(() => {
   }, 10);
 });
 
+function scrollTo(view) {
+  view.value?.scrollIntoView({ behavior: "smooth" });
+}
+
 function drawChart() {
   const grey = "#e5e5e5";
   const bley = "#333333";
   const trDelay = 500;
 
   // Specify the chart’s dimensions.
-  const width = 1000;
+  const width = parseInt(d3.select(".stats-wrapper").style("width"), 10);
   const height = width;
 
   // Compute the layout.
@@ -144,7 +150,11 @@ function drawChart() {
     focus = d;
 
     if (focus0.depth === 2 && focus.depth === 0) {
-      console.log("Targeted song:", focus0.data.name, focus0.data.id);
+      link.value = `https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${focus0.data.id}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true`;
+      linkExists.value = true;
+      setTimeout(() => {
+        scrollTo(widget);
+      }, 10);
     }
 
     const transition = svg
@@ -248,7 +258,7 @@ function drawChart() {
           this.style.display = "inline";
       });
   }
-  console.log(svg.node());
+  // console.log(svg.node());
 }
 </script>
 
@@ -259,14 +269,15 @@ function drawChart() {
       >'s likes grouped by uploaders:
     </h3>
     <svg></svg>
+    <iframe
+      width="100%"
+      height="300px"
+      :src="link"
+      v-if="linkExists"
+      ref="widget"
+    ></iframe>
   </div>
 </template>
-
-<!--   <iframe
-    width="80%"
-    height="300"
-    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/81345014&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
-  ></iframe> -->
 
 <style lang="scss" scoped>
 @use "../assets/colors";
