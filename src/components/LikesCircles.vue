@@ -43,10 +43,10 @@ function drawChart() {
     .select("svg")
     .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
     .attr("width", width)
-    .attr("height", height)
+    .attr("height", (height / 100) * 70)
     .attr(
       "style",
-      `max-width: 100%; height: auto; display: block; margin: 0 -14px; background: #090909; cursor: pointer;`
+      `display: block; margin: 0 -14px; background: #090909; cursor: pointer;`
     );
 
   // Create defs for storing images
@@ -149,7 +149,17 @@ function drawChart() {
 
     focus = d;
 
-    if (focus0.depth === 2 && focus.depth === 0) {
+    //change widget
+    let targetTags = event.target.outerHTML.split("r");
+    let targetR = Number(
+      targetTags
+        .filter((word) => {
+          return word.slice(0, 1) == "=";
+        })[0]
+        .slice(2)
+        .split('"')[0]
+    );
+    if (Math.round(targetR) == focus.r) {
       link.value = `https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${focus0.data.id}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true`;
       linkExists.value = true;
       setTimeout(() => {
@@ -159,7 +169,6 @@ function drawChart() {
 
     const transition = svg
       .transition()
-      // .delay(trDelay * 2)
       .duration(event.altKey ? 7500 : 750)
       .tween("zoom", (d) => {
         const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
@@ -258,7 +267,6 @@ function drawChart() {
           this.style.display = "inline";
       });
   }
-  // console.log(svg.node());
 }
 </script>
 
@@ -283,5 +291,8 @@ function drawChart() {
 @use "../assets/colors";
 span {
   color: colors.$orange;
+}
+iframe {
+  margin-top: 10px;
 }
 </style>
