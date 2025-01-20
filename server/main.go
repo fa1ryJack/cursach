@@ -9,7 +9,8 @@ import (
 
 func getData(w http.ResponseWriter, r *http.Request) {
     data, err := FetchLikes(r.URL.Query().Get("profile"))
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
 	w.Header().Set("Content-Type", "application/json")
 	if err != nil{
 		resp := make(map[string]string)
@@ -20,7 +21,6 @@ func getData(w http.ResponseWriter, r *http.Request) {
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(jsonResp)
-
 	}else{
 		jsonResp, err := json.Marshal(data)
 		if err != nil {
