@@ -13,13 +13,13 @@ function handleSubmit(e) {
   e.preventDefault();
   loaded.value = false;
   loading.value = true;
+  problem.value = false;
   axios
-    .get("http://localhost:8080/data?profile=" + userURL.value.trim())
+    .get("http://localhost:8080/data?profile=" + userURL?.value.trim())
     .then((res) => {
       likesData.value = res.data;
     })
     .catch((error) => {
-      console.log("error!!!!", error);
       loading.value = false;
       loaded.value = false;
       problem.value = true;
@@ -27,7 +27,6 @@ function handleSubmit(e) {
     .finally(() => {
       loading.value = false;
       loaded.value = true;
-      problem.value = false;
     });
 }
 </script>
