@@ -14,13 +14,13 @@ You can click on circles to zoom in. Click on zoomed track for SoundCloud widget
 
 You need installed `go` and `npm`.
 
-Clone or download this repo.
+- Clone or download this repo.
 
-In `server` directory run `go run .` in CLI.
+- In `/server` directory run `go run .` in CLI.
 
-In parentt diretory run `npm install` and `npm run dev`.
+- In parentt diretory run `npm install` and then `npm run dev` in CLI.
 
-# What it uses
+# A little about what it uses
 
 The server is written with go and it only fetches likes from SoundCloud.
 
